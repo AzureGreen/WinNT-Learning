@@ -1,0 +1,90 @@
+;
+; HookKiFastCallEntry.inf
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=Sample ; TODO: edit Class
+ClassGuid={78A1C341-4539-11d3-B88D-00C04FAD5171} ; TODO: edit ClassGuid
+Provider=%ManufacturerName%
+CatalogFile=HookKiFastCallEntry.cat
+DriverVer=03/29/2017,21.26.14.305
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+; ================= Class section =====================
+
+[ClassInstall32]
+Addreg=SampleClassReg
+
+[SampleClassReg]
+HKR,,,0,%ClassName%
+HKR,,Icon,,-5
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+HookKiFastCallEntry.sys  = 1,,
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTx86
+
+[Standard.NTx86]
+%HookKiFastCallEntry.DeviceDesc%=HookKiFastCallEntry_Device, Root\HookKiFastCallEntry ; TODO: edit hw-id
+
+[HookKiFastCallEntry_Device.NT]
+CopyFiles=Drivers_Dir
+
+[Drivers_Dir]
+HookKiFastCallEntry.sys
+
+;-------------- Service installation
+[HookKiFastCallEntry_Device.NT.Services]
+AddService = HookKiFastCallEntry,%SPSVCINST_ASSOCSERVICE%, HookKiFastCallEntry_Service_Inst
+
+; -------------- HookKiFastCallEntry driver install sections
+[HookKiFastCallEntry_Service_Inst]
+DisplayName    = %HookKiFastCallEntry.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\HookKiFastCallEntry.sys
+
+;
+;--- HookKiFastCallEntry_Device Coinstaller installation ------
+;
+
+[DestinationDirs]
+HookKiFastCallEntry_Device_CoInstaller_CopyFiles = 11
+
+[HookKiFastCallEntry_Device.NT.CoInstallers]
+AddReg=HookKiFastCallEntry_Device_CoInstaller_AddReg
+CopyFiles=HookKiFastCallEntry_Device_CoInstaller_CopyFiles
+
+[HookKiFastCallEntry_Device_CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller01009.dll,WdfCoInstaller"
+
+[HookKiFastCallEntry_Device_CoInstaller_CopyFiles]
+WdfCoInstaller01009.dll
+
+[SourceDisksFiles]
+WdfCoInstaller01009.dll=1 ; make sure the number matches with SourceDisksNames
+
+[HookKiFastCallEntry_Device.NT.Wdf]
+KmdfService =  HookKiFastCallEntry, HookKiFastCallEntry_wdfsect
+[HookKiFastCallEntry_wdfsect]
+KmdfLibraryVersion = 1.9
+
+[Strings]
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName="<Your manufacturer name>" ;TODO: Replace with your manufacturer name
+ClassName="Samples" ; TODO: edit ClassName
+DiskName = "HookKiFastCallEntry Installation Disk"
+HookKiFastCallEntry.DeviceDesc = "HookKiFastCallEntry Device"
+HookKiFastCallEntry.SVCDESC = "HookKiFastCallEntry Service"

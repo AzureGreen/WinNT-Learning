@@ -1,0 +1,4 @@
+﻿  Building 'HookKiFastCallEntry' with toolset 'WindowsKernelModeDriver10.0' and the 'Desktop' target platform.
+  Stamping Debug\HookKiFastCallEntry.inf [Version] section with DriverVer=03/29/2017,21.26.14.305
+  HookKiFastCallEntry.vcxproj -> F:\Test\HookKiFastCallEntry\Debug\HookKiFastCallEntry.sys
+  HookKiFastCallEntry.vcxproj -> F:\Test\HookKiFastCallEntry\Debug\HookKiFastCallEntry.pdb (Full PDB)
