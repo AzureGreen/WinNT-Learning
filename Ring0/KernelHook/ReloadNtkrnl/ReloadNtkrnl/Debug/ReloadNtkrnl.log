@@ -1,0 +1,5 @@
+﻿  Building 'ReloadNtkrnl' with toolset 'WindowsKernelModeDriver10.0' and the 'Desktop' target platform.
+  Stamping Debug\ReloadNtkrnl.inf [Version] section with DriverVer=03/31/2017,19.18.45.243
+  main.c
+  ReloadNtkrnl.vcxproj -> F:\Test\ReloadNtkrnl\Debug\ReloadNtkrnl.sys
+  ReloadNtkrnl.vcxproj -> F:\Test\ReloadNtkrnl\Debug\ReloadNtkrnl.pdb (Full PDB)
