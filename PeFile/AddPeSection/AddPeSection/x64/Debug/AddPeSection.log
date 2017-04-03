@@ -1,0 +1,7 @@
+﻿  stdafx.cpp
+  AddPeSection.cpp
+f:\github\winnt-learning\pefile\addpesection\addpesection\addpesection.cpp(152): warning C4244: “=”: 从“UINT_PTR”转换到“__unaligned DWORD”，可能丢失数据
+f:\github\winnt-learning\pefile\addpesection\addpesection\addpesection.cpp(154): warning C4244: “=”: 从“UINT_PTR”转换到“__unaligned DWORD”，可能丢失数据
+f:\github\winnt-learning\pefile\addpesection\addpesection\addpesection.cpp(161): warning C4244: “=”: 从“UINT_PTR”转换到“__unaligned DWORD”，可能丢失数据
+  AddPeSection.vcxproj -> F:\Github\WinNT-Learning\PeFile\AddPeSection\x64\Debug\AddPeSection.exe
+  AddPeSection.vcxproj -> F:\Github\WinNT-Learning\PeFile\AddPeSection\x64\Debug\AddPeSection.pdb (Full PDB)

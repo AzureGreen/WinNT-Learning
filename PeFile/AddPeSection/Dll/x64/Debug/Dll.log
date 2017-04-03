@@ -1,0 +1,6 @@
+﻿  stdafx.cpp
+  Dll.cpp
+  dllmain.cpp
+    正在创建库 F:\Github\WinNT-Learning\PeFile\AddPeSection\x64\Debug\Dll.lib 和对象 F:\Github\WinNT-Learning\PeFile\AddPeSection\x64\Debug\Dll.exp
+  Dll.vcxproj -> F:\Github\WinNT-Learning\PeFile\AddPeSection\x64\Debug\Dll.dll
+  Dll.vcxproj -> F:\Github\WinNT-Learning\PeFile\AddPeSection\x64\Debug\Dll.pdb (Full PDB)
