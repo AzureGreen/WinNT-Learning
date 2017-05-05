@@ -1,0 +1,5 @@
+﻿  Building 'EnumSsdtHook' with toolset 'WindowsKernelModeDriver10.0' and the 'Desktop' target platform.
+  Stamping x64\Debug\EnumSsdtHook.inf [Version] section with DriverVer=05/05/2017,22.59.0.382
+  main.c
+  EnumSsdtHook.vcxproj -> F:\Test\EnumSsdtHook\x64\Debug\EnumSsdtHook.sys
+  EnumSsdtHook.vcxproj -> F:\Test\EnumSsdtHook\x64\Debug\EnumSsdtHook.pdb (Full PDB)

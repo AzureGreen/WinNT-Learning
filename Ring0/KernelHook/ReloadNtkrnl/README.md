@@ -1,4 +1,5 @@
 # ReloadNtkrnl
+### Platform in Win7 x86<br/>
 ## Reload kernel module in system space<br/>
 
 1. Get information of first kernel module.

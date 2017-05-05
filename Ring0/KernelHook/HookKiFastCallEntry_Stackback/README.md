@@ -1,4 +1,5 @@
 # HookKiFastCallEntry
+### Platform in Win7 x86/x64<br/>
 ## Hook KiFastCallEntry which is the entry of syscall<br/>
 ### The main task is to get the address of KiFastCallEntry
 

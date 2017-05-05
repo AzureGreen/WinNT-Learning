@@ -1,0 +1,90 @@
+;
+; EnumSsdtHook.inf
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=Sample ; TODO: edit Class
+ClassGuid={78A1C341-4539-11d3-B88D-00C04FAD5171} ; TODO: edit ClassGuid
+Provider=%ManufacturerName%
+CatalogFile=EnumSsdtHook.cat
+DriverVer=05/05/2017,22.59.0.382
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+; ================= Class section =====================
+
+[ClassInstall32]
+Addreg=SampleClassReg
+
+[SampleClassReg]
+HKR,,,0,%ClassName%
+HKR,,Icon,,-5
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+EnumSsdtHook.sys  = 1,,
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTamd64
+
+[Standard.NTamd64]
+%EnumSsdtHook.DeviceDesc%=EnumSsdtHook_Device, Root\EnumSsdtHook ; TODO: edit hw-id
+
+[EnumSsdtHook_Device.NT]
+CopyFiles=Drivers_Dir
+
+[Drivers_Dir]
+EnumSsdtHook.sys
+
+;-------------- Service installation
+[EnumSsdtHook_Device.NT.Services]
+AddService = EnumSsdtHook,%SPSVCINST_ASSOCSERVICE%, EnumSsdtHook_Service_Inst
+
+; -------------- EnumSsdtHook driver install sections
+[EnumSsdtHook_Service_Inst]
+DisplayName    = %EnumSsdtHook.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\EnumSsdtHook.sys
+
+;
+;--- EnumSsdtHook_Device Coinstaller installation ------
+;
+
+[DestinationDirs]
+EnumSsdtHook_Device_CoInstaller_CopyFiles = 11
+
+[EnumSsdtHook_Device.NT.CoInstallers]
+AddReg=EnumSsdtHook_Device_CoInstaller_AddReg
+CopyFiles=EnumSsdtHook_Device_CoInstaller_CopyFiles
+
+[EnumSsdtHook_Device_CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller01009.dll,WdfCoInstaller"
+
+[EnumSsdtHook_Device_CoInstaller_CopyFiles]
+WdfCoInstaller01009.dll
+
+[SourceDisksFiles]
+WdfCoInstaller01009.dll=1 ; make sure the number matches with SourceDisksNames
+
+[EnumSsdtHook_Device.NT.Wdf]
+KmdfService =  EnumSsdtHook, EnumSsdtHook_wdfsect
+[EnumSsdtHook_wdfsect]
+KmdfLibraryVersion = 1.9
+
+[Strings]
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName="<Your manufacturer name>" ;TODO: Replace with your manufacturer name
+ClassName="Samples" ; TODO: edit ClassName
+DiskName = "EnumSsdtHook Installation Disk"
+EnumSsdtHook.DeviceDesc = "EnumSsdtHook Device"
+EnumSsdtHook.SVCDESC = "EnumSsdtHook Service"
