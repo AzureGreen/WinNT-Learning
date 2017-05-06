@@ -258,12 +258,13 @@ InitializeSsdtFunctionName()
 {
 	NTSTATUS  Status = STATUS_SUCCESS;
 
-	if (g_CurrentSsdtAddress == NULL)
+	PKSERVICE_TABLE_DESCRIPTOR CurrentSsdtAddress = (PKSERVICE_TABLE_DESCRIPTOR)GetCurrentSsdtAddress();
+	if (CurrentSsdtAddress == NULL)
 	{
 		return STATUS_UNSUCCESSFUL;
 	}
 
-	if (*g_SsdtFunctionName[0] == 0 || *g_SsdtFunctionName[g_CurrentSsdtAddress->Limit] == 0)
+	if (*g_SsdtFunctionName[0] == 0 || *g_SsdtFunctionName[CurrentSsdtAddress->Limit] == 0)
 	{
 		UINT32    Count = 0;
 
@@ -321,7 +322,8 @@ InitializeSsdtFunctionName()
 					PUINT32                 AddressOfNames = NULL;          // offset
 					PUINT16                 AddressOfNameOrdinals = NULL;   // Ordinal
 
-					ExportDirectory = (PIMAGE_EXPORT_DIRECTORY)((PUINT8)MappingBaseAddress + NtHeader->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_EXPORT].VirtualAddress);		// 导出表地址
+					ExportDirectory = (PIMAGE_EXPORT_DIRECTORY)((PUINT8)MappingBaseAddress + 
+						NtHeader->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_EXPORT].VirtualAddress);		// 导出表地址
 
 					AddressOfFunctions = (PUINT32)((PUINT8)MappingBaseAddress + ExportDirectory->AddressOfFunctions);
 					AddressOfNames = (PUINT32)((PUINT8)MappingBaseAddress + ExportDirectory->AddressOfNames);
@@ -347,7 +349,7 @@ InitializeSsdtFunctionName()
 
 							SsdtFunctionIndex = *(PUINT32)(FunctionAddress + SsdtFunctionIndexOffset);
 
-							if ((SsdtFunctionIndex >= 0) && (SsdtFunctionIndex < (INT32)g_CurrentSsdtAddress->Limit))
+							if ((SsdtFunctionIndex >= 0) && (SsdtFunctionIndex < (INT32)CurrentSsdtAddress->Limit))
 							{
 								CharToWchar(szFunctionName, wzFunctionName);
 
@@ -950,30 +952,25 @@ EnumSsdtHook()
 #ifdef _WIN64
 					// 64位存储的是 偏移（高28位）
 					INT32 OriginalOffset = g_SsdtItem[i] >> 4;
-					INT32 CurrentOffset = (*(UINT32*)((UINT64)g_CurrentSsdtAddress->Base + i * 4)) >> 4;
+					INT32 CurrentOffset = (*(PINT32)((UINT64)g_CurrentSsdtAddress->Base + i * 4)) >> 4;    // 带符号位的移位
 
-					if (OriginalOffset != CurrentOffset)   // 表明被Hook了
-					{
-						DbgPrint("Ssdt Function Ordinal: %d\r\n", i);
-						DbgPrint("Ssdt Function Ordinal: 0x%p\r\n", (UINT_PTR)(g_CurrentSsdtAddress->Base + CurrentOffset));
-						DbgPrint("Ssdt Function Ordinal: 0x%p\r\n", g_OriginalSsdtFunctionAddress[i]);
-						DbgPrint("Ssdt Function Ordinal: %S\r\n", g_SsdtFunctionName[i]);
+					UINT64 CurrentSsdtFunctionAddress = (UINT_PTR)((UINT_PTR)g_CurrentSsdtAddress->Base + CurrentOffset);
+					UINT64 OriginalSsdtFunctionAddress = g_OriginalSsdtFunctionAddress[i];
 
-					}
 #else
+					// 32位存储的是 绝对地址
 					UINT32 CurrentSsdtFunctionAddress = *(UINT32*)((UINT32)g_CurrentSsdtAddress->Base + i * 4);
 					UINT32 OriginalSsdtFunctionAddress = g_SsdtItem[i];
 
+#endif // _WIN64
 					if (OriginalSsdtFunctionAddress != CurrentSsdtFunctionAddress)
 					{
-						DbgPrint("Ssdt Function Ordinal: %d\r\n", i);
-						DbgPrint("Ssdt Function Ordinal: 0x%p\r\n", CurrentSsdtFunctionAddress);
-						DbgPrint("Ssdt Function Ordinal: 0x%p\r\n", OriginalSsdtFunctionAddress);
-						DbgPrint("Ssdt Function Ordinal: %S\r\n", g_SsdtFunctionName[i]);
+						DbgPrint("Ssdt Function Ordinal:  %d\r\n", i);
+						DbgPrint("Ssdt Function Current:  0x%p\r\n", CurrentSsdtFunctionAddress);
+						DbgPrint("Ssdt Function Original: 0x%p\r\n", OriginalSsdtFunctionAddress);
+						DbgPrint("Ssdt Function Name:     %S\r\n", g_SsdtFunctionName[i]);
 
 					}
-
-#endif // _WIN64
 
 				}
 

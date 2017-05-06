@@ -8,7 +8,7 @@ Class=Sample ; TODO: edit Class
 ClassGuid={78A1C341-4539-11d3-B88D-00C04FAD5171} ; TODO: edit ClassGuid
 Provider=%ManufacturerName%
 CatalogFile=EnumSsdtHook.cat
-DriverVer=05/06/2017,1.4.16.592
+DriverVer=05/06/2017,23.50.11.49
 
 [DestinationDirs]
 DefaultDestDir = 12
