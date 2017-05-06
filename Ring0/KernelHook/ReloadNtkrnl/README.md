@@ -10,6 +10,10 @@
 
 4. (We can hook kifastcall to make syscall jmp to our "Kernel space")
 
+ <h3>BeforeReloc</h3>
+ <img src="https://github.com/AzureGreen/WinNT-Learning/blob/master/Ring0/KernelHook/ReloadNtkrnl/BeforeReloc.jpg" width = "663" height = "466" alt="BeforeReloc" align=center />
+ <h3>AfterReloc</h3>
+ <img src="https://github.com/AzureGreen/WinNT-Learning/blob/master/Ring0/KernelHook/ReloadNtkrnl/AfterReloc.jpg" width = "663" height = "466" alt="AfterReloc" align=center />
 
 
 
