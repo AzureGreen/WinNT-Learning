@@ -1,0 +1,90 @@
+;
+; DeleteFileByIrp.inf
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=Sample ; TODO: edit Class
+ClassGuid={78A1C341-4539-11d3-B88D-00C04FAD5171} ; TODO: edit ClassGuid
+Provider=%ManufacturerName%
+CatalogFile=DeleteFileByIrp.cat
+DriverVer=05/18/2017,23.26.7.674
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+; ================= Class section =====================
+
+[ClassInstall32]
+Addreg=SampleClassReg
+
+[SampleClassReg]
+HKR,,,0,%ClassName%
+HKR,,Icon,,-5
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+DeleteFileByIrp.sys  = 1,,
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTamd64
+
+[Standard.NTamd64]
+%DeleteFileByIrp.DeviceDesc%=DeleteFileByIrp_Device, Root\DeleteFileByIrp ; TODO: edit hw-id
+
+[DeleteFileByIrp_Device.NT]
+CopyFiles=Drivers_Dir
+
+[Drivers_Dir]
+DeleteFileByIrp.sys
+
+;-------------- Service installation
+[DeleteFileByIrp_Device.NT.Services]
+AddService = DeleteFileByIrp,%SPSVCINST_ASSOCSERVICE%, DeleteFileByIrp_Service_Inst
+
+; -------------- DeleteFileByIrp driver install sections
+[DeleteFileByIrp_Service_Inst]
+DisplayName    = %DeleteFileByIrp.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\DeleteFileByIrp.sys
+
+;
+;--- DeleteFileByIrp_Device Coinstaller installation ------
+;
+
+[DestinationDirs]
+DeleteFileByIrp_Device_CoInstaller_CopyFiles = 11
+
+[DeleteFileByIrp_Device.NT.CoInstallers]
+AddReg=DeleteFileByIrp_Device_CoInstaller_AddReg
+CopyFiles=DeleteFileByIrp_Device_CoInstaller_CopyFiles
+
+[DeleteFileByIrp_Device_CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller01009.dll,WdfCoInstaller"
+
+[DeleteFileByIrp_Device_CoInstaller_CopyFiles]
+WdfCoInstaller01009.dll
+
+[SourceDisksFiles]
+WdfCoInstaller01009.dll=1 ; make sure the number matches with SourceDisksNames
+
+[DeleteFileByIrp_Device.NT.Wdf]
+KmdfService =  DeleteFileByIrp, DeleteFileByIrp_wdfsect
+[DeleteFileByIrp_wdfsect]
+KmdfLibraryVersion = 1.9
+
+[Strings]
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName="<Your manufacturer name>" ;TODO: Replace with your manufacturer name
+ClassName="Samples" ; TODO: edit ClassName
+DiskName = "DeleteFileByIrp Installation Disk"
+DeleteFileByIrp.DeviceDesc = "DeleteFileByIrp Device"
+DeleteFileByIrp.SVCDESC = "DeleteFileByIrp Service"

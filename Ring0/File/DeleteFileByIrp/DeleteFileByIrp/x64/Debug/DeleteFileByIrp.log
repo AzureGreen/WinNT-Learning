@@ -1,0 +1,5 @@
+﻿  Building 'DeleteFileByIrp' with toolset 'WindowsKernelModeDriver10.0' and the 'Desktop' target platform.
+  Stamping x64\Debug\DeleteFileByIrp.inf [Version] section with DriverVer=05/18/2017,23.26.7.674
+  main.c
+  DeleteFileByIrp.vcxproj -> F:\Test\DeleteFileByIrp\x64\Debug\DeleteFileByIrp.sys
+  DeleteFileByIrp.vcxproj -> F:\Test\DeleteFileByIrp\x64\Debug\DeleteFileByIrp.pdb (Full PDB)
